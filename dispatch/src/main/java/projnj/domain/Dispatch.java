@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 import projnj.DispatchApplication;
+import projnj.domain.DispatchCanceled;
 import projnj.domain.Dispatched;
 
 @Entity
@@ -30,6 +31,9 @@ public class Dispatch {
     public void onPostPersist() {
         Dispatched dispatched = new Dispatched(this);
         dispatched.publishAfterCommit();
+
+        DispatchCanceled dispatchCanceled = new DispatchCanceled(this);
+        dispatchCanceled.publishAfterCommit();
     }
 
     public static DispatchRepository repository() {
@@ -60,6 +64,34 @@ public class Dispatch {
 
             Dispatched dispatched = new Dispatched(dispatch);
             dispatched.publishAfterCommit();
+
+         });
+        */
+
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public static void malfunction(CallCanceled callCanceled) {
+        //implement business logic here:
+
+        /** Example 1:  new item 
+        Dispatch dispatch = new Dispatch();
+        repository().save(dispatch);
+
+        DispatchCanceled dispatchCanceled = new DispatchCanceled(dispatch);
+        dispatchCanceled.publishAfterCommit();
+        */
+
+        /** Example 2:  finding and process
+        
+        repository().findById(callCanceled.get???()).ifPresent(dispatch->{
+            
+            dispatch // do something
+            repository().save(dispatch);
+
+            DispatchCanceled dispatchCanceled = new DispatchCanceled(dispatch);
+            dispatchCanceled.publishAfterCommit();
 
          });
         */
