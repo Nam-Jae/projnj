@@ -34,5 +34,21 @@ public class PolicyHandler {
         // Sample Logic //
         Dispatch.getHelp(event);
     }
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='CallCanceled'"
+    )
+    public void wheneverCallCanceled_Malfunction(
+        @Payload CallCanceled callCanceled
+    ) {
+        CallCanceled event = callCanceled;
+        System.out.println(
+            "\n\n##### listener Malfunction : " + callCanceled + "\n\n"
+        );
+
+        // Sample Logic //
+        Dispatch.malfunction(event);
+    }
 }
 //>>> Clean Arch / Inbound Adaptor

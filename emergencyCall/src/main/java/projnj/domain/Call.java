@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 import projnj.EmergencyCallApplication;
+import projnj.domain.CallCanceled;
 import projnj.domain.Called;
 
 @Entity
@@ -30,6 +31,9 @@ public class Call {
     public void onPostPersist() {
         Called called = new Called(this);
         called.publishAfterCommit();
+
+        CallCanceled callCanceled = new CallCanceled(this);
+        callCanceled.publishAfterCommit();
     }
 
     public static CallRepository repository() {

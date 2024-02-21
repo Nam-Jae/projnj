@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 import projnj.ReservationApplication;
+import projnj.domain.Canceled;
 import projnj.domain.Reserved;
 
 @Entity
@@ -28,6 +29,9 @@ public class Reservation {
     public void onPostPersist() {
         Reserved reserved = new Reserved(this);
         reserved.publishAfterCommit();
+
+        Canceled canceled = new Canceled(this);
+        canceled.publishAfterCommit();
     }
 
     public static ReservationRepository repository() {
@@ -58,6 +62,34 @@ public class Reservation {
 
             Reserved reserved = new Reserved(reservation);
             reserved.publishAfterCommit();
+
+         });
+        */
+
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public static void cancelReservation(DispatchCanceled dispatchCanceled) {
+        //implement business logic here:
+
+        /** Example 1:  new item 
+        Reservation reservation = new Reservation();
+        repository().save(reservation);
+
+        Canceled canceled = new Canceled(reservation);
+        canceled.publishAfterCommit();
+        */
+
+        /** Example 2:  finding and process
+        
+        repository().findById(dispatchCanceled.get???()).ifPresent(reservation->{
+            
+            reservation // do something
+            repository().save(reservation);
+
+            Canceled canceled = new Canceled(reservation);
+            canceled.publishAfterCommit();
 
          });
         */

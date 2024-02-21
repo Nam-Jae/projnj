@@ -38,5 +38,23 @@ public class PolicyHandler {
         // Sample Logic //
         Reservation.makeReservation(event);
     }
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='DispatchCanceled'"
+    )
+    public void wheneverDispatchCanceled_CancelReservation(
+        @Payload DispatchCanceled dispatchCanceled
+    ) {
+        DispatchCanceled event = dispatchCanceled;
+        System.out.println(
+            "\n\n##### listener CancelReservation : " +
+            dispatchCanceled +
+            "\n\n"
+        );
+
+        // Sample Logic //
+        Reservation.cancelReservation(event);
+    }
 }
 //>>> Clean Arch / Inbound Adaptor
